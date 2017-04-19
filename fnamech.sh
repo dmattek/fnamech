@@ -87,6 +87,10 @@ done
 # /tmp/* are files in dir and /tmp/**/* are files in subfolders
 # It is possible that you have to enable globstar option (shopt -s globstar)
 # for currf in $1/* $1/**/* ; do
+
+# In order to deal with filenames with spaces,
+# temporarily set the IFS (internal field seperator) to the newline character
+IFS=$'\n'
 for currf in $(find $1 -name '*' -or -name '*.*'); do
 	if [[ $currf == *"$EXTFROM"* ]]; then
 		newf=`echo ${currf/$EXTFROM/$EXTTO}`
