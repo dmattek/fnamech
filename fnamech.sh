@@ -36,7 +36,7 @@
 usage="This script changes extensions of all files recursively in the current folder.
 
 Usage:
-$(basename "$0") [-h] [-f char] [-t char] path_without_trailing_/
+$(basename "$0") [-h] [-f char] [-t char] path
 
 where:
 	-h | --help		Show this Help text.
@@ -86,10 +86,15 @@ done
 # From: http://stackoverflow.com/a/15088473/1898713
 # /tmp/* are files in dir and /tmp/**/* are files in subfolders
 # It is possible that you have to enable globstar option (shopt -s globstar)
-for currf in $1/**/* ; do
-	newf=`echo ${currf/$EXTFROM/$EXTTO}`
-	printf "From: %s\nTo: %s\n\n" $currf $newf
-	if [ $TST -eq 0 ]; then
-		mv $currf $newf
+# for currf in $1/* $1/**/* ; do
+for currf in $(find $1 -name '*' -or -name '*.*'); do
+	if [[ $currf == *"$EXTFROM"* ]]; then
+		newf=`echo ${currf/$EXTFROM/$EXTTO}`
+		printf "From: %s\nTo: %s\n\n" $currf $newf
+		if [ $TST -eq 0 ]; then
+			mv $currf $newf
+		fi
 	fi
 done
+
+
